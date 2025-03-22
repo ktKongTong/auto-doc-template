@@ -43,7 +43,9 @@ runs:
     - name: set output
       shell: bash
       run: |
-        echo "${{steps.gemini-stt.outputs.output}}" > tmp-stt.md
+        cat <<EOF > tmp-stt.md
+          ${{steps.gemini-stt.outputs.output}}
+        EOF
     - name: Upload output.md
       uses: actions/upload-artifact@v4
       with:
@@ -55,11 +57,11 @@ runs:
       id: final-output
       shell: bash
       run: |
-        echo "${{steps.gemini-stt.outputs.output}}" > tmp-stt.md
         cat tmp-stt.md | jq -sR '{markdown: .}' > tmp-stt.json
         echo 'ai<<EOF' >> $GITHUB_OUTPUT
         cat tmp-stt.json >> $GITHUB_OUTPUT
         echo 'EOF' >> $GITHUB_OUTPUT
+        cat tmp-stt.json
     - name: clean file
       shell: bash
       run: |
