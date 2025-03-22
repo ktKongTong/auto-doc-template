@@ -156,23 +156,6 @@ runs:
         cat tmp.json >> $GITHUB_OUTPUT
         echo 'EOF' >> $GITHUB_OUTPUT
         rm -f tmp.json
-    - id: show-param-result
-      shell: bash
-      run: |
-        echo "show result"
-        echo '${{ steps.merge-param.outputs.result }}'
-    - id: gen-markdown-test
-      if: ${{ steps.check-exist.outputs.continue == 'true' }}
-      uses: ./.github/actions/format
-      with:
-        variable: |
-          ${{ toJSON(steps.merge-param.outputs.result) }}
-        template: |
-          ${{ steps.template-loader.outputs.markdown-template }}
-    - id: show-test-result
-      shell: bash
-      run: |
-        echo "${{ steps.gen-markdown-test.outputs.result }}"
     - id: gen-markdown
       if: ${{ steps.check-exist.outputs.continue == 'true' }}
       uses: ./.github/actions/format
