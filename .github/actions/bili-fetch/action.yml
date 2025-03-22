@@ -148,11 +148,11 @@ runs:
           "video": ${{ steps.bili.outputs.video }},
           "ai": ${{ steps.stt.outputs.ai }}
         }
-        'EOF'
+        EOF
         cat tmp.json
         echo "result<<'EOF'" >> $GITHUB_OUTPUT
         cat tmp.json >> $GITHUB_OUTPUT
-        echo "'EOF'" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
         rm -f tmp.json
     - id: gen-markdown-test
       if: ${{ steps.check-exist.outputs.continue == 'true' }}
@@ -164,12 +164,12 @@ runs:
     - id: show-test-result
       shell: bash
       run: |
-        ${{ steps.gen-markdown.outputs.result }}
+        ${{ steps.gen-markdown-test.outputs.result }}
     - id: gen-markdown
       if: ${{ steps.check-exist.outputs.continue == 'true' }}
       uses: ./.github/actions/format
       with:
-        variable: ${{ steps.bili.outputs.video }}
+        variable: ${{ steps.merge-param.outputs.result }}
         template: |
           ${{ steps.template-loader.outputs.markdown-template }}
     - name: add to file
@@ -179,7 +179,7 @@ runs:
         echo "writing content to tmp.md"
         cat <<'EOF' > tmp.md
         ${{ steps.gen-markdown.outputs.result }}
-        'EOF'
+        EOF
     - name: move to dest
       if: ${{ steps.check-exist.outputs.continue == 'true' }}
       shell: bash
