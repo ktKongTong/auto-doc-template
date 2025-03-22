@@ -154,6 +154,13 @@ runs:
         cat tmp.json >> $GITHUB_OUTPUT
         echo '"EOF"' >> $GITHUB_OUTPUT
         rm -f tmp.json
+    - id: gen-markdown-test
+      if: ${{ steps.check-exist.outputs.continue == 'true' }}
+      uses: ./.github/actions/format
+      with:
+        variable: ${{ steps.merge-param.outputs.video }}
+        template: |
+          ${{ steps.template-loader.outputs.markdown-template }}
     - id: gen-markdown
       if: ${{ steps.check-exist.outputs.continue == 'true' }}
       uses: ./.github/actions/format
