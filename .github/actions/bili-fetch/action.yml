@@ -146,7 +146,7 @@ runs:
         cat <<EOF > tmp.json
         {
           "video": ${{ steps.bili.outputs.video }},
-          "ai": ${{ steps.bili.outputs.video }}
+          "ai": ${{ steps.stt.outputs.ai }}
         }
         EOF
         echo 'result<<EOF' >> $GITHUB_OUTPUT
