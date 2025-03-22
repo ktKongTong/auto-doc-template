@@ -150,7 +150,7 @@ runs:
         }
         EOF
         cat tmp.json
-        echo "result<<'EOF'" >> $GITHUB_OUTPUT
+        echo "result<<EOF" >> $GITHUB_OUTPUT
         cat tmp.json >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
         rm -f tmp.json
