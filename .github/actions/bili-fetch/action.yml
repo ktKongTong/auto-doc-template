@@ -149,16 +149,23 @@ runs:
           "ai": ${{ steps.stt.outputs.ai }}
         }
         EOF
+        echo "show json"
+        cat tmp.json
         cat tmp.json | jq type 1>/dev/null
         echo "result<<EOF" >> $GITHUB_OUTPUT
         cat tmp.json >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
         rm -f tmp.json
+    - id: show-test-result
+      shell: bash
+      run: |
+        ehco "show result"
+        echo '${{ steps.merge-param.outputs.result }}'
     - id: gen-markdown-test
       if: ${{ steps.check-exist.outputs.continue == 'true' }}
       uses: ./.github/actions/format
       with:
-        variable: ${{ steps.merge-param.outputs.result }}
+        variable: ${{ toJSON(steps.merge-param.outputs.result) }}
         template: |
           ${{ steps.template-loader.outputs.markdown-template }}
     - id: show-test-result
