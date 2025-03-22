@@ -7,6 +7,8 @@ const sanitizeInput = core.getInput("sanitize") || 'false'
 const data = JSON.parse(input)
 let sanitize =  sanitizeInput == 'true'
 try {
+  console.log("typeof data",typeof data)
+  console.log("data",data)
   console.log(JSON.stringify(data?.video))
   console.log(JSON.stringify(data?.ai))
   console.log("keys",Object.keys(data))
