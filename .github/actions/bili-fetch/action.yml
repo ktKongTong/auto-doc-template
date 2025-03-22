@@ -149,6 +149,7 @@ runs:
           "ai": ${{ steps.stt.outputs.ai }}
         }
         EOF
+        cat tmp.json
         echo 'result<<EOF' >> $GITHUB_OUTPUT
         cat tmp.json >> $GITHUB_OUTPUT
         echo 'EOF' >> $GITHUB_OUTPUT
@@ -157,7 +158,7 @@ runs:
       if: ${{ steps.check-exist.outputs.continue == 'true' }}
       uses: ./.github/actions/format
       with:
-        variable: ${{ steps.merge-param.outputs.result }}
+        variable: ${{ steps.bili.outputs.video }}
         template: |
           ${{ steps.template-loader.outputs.markdown-template }}
     - name: add to file
