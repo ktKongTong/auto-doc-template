@@ -11492,6 +11492,20 @@ function requirePool () {
 	      ? { ...options.interceptors }
 	      : undefined;
 	    this[kFactory] = factory;
+
+	    this.on('connectionError', (origin, targets, error) => {
+	      // If a connection error occurs, we remove the client from the pool,
+	      // and emit a connectionError event. They will not be re-used.
+	      // Fixes https://github.com/nodejs/undici/issues/3895
+	      for (const target of targets) {
+	        // Do not use kRemoveClient here, as it will close the client,
+	        // but the client cannot be closed in this state.
+	        const idx = this[kClients].indexOf(target);
+	        if (idx !== -1) {
+	          this[kClients].splice(idx, 1);
+	        }
+	      }
+	    });
 	  }
 
 	  [kGetDispatcher] () {
@@ -14953,6 +14967,7 @@ function requireHeaders () {
 	  isValidHeaderName,
 	  isValidHeaderValue
 	} = requireUtil$5();
+	const util = require$$0$2;
 	const { webidl } = requireWebidl();
 	const assert = require$$0$3;
 
@@ -15499,6 +15514,9 @@ function requireHeaders () {
 	  [Symbol.toStringTag]: {
 	    value: 'Headers',
 	    configurable: true
+	  },
+	  [util.inspect.custom]: {
+	    enumerable: false
 	  }
 	});
 
@@ -21388,9 +21406,10 @@ function requireUtil$1 () {
 	if (hasRequiredUtil$1) return util$1;
 	hasRequiredUtil$1 = 1;
 
-	const assert = require$$0$3;
-	const { kHeadersList } = requireSymbols$4();
-
+	/**
+	 * @param {string} value
+	 * @returns {boolean}
+	 */
 	function isCTLExcludingHtab (value) {
 	  if (value.length === 0) {
 	    return false
@@ -21651,31 +21670,13 @@ function requireUtil$1 () {
 	  return out.join('; ')
 	}
 
-	let kHeadersListNode;
-
-	function getHeadersList (headers) {
-	  if (headers[kHeadersList]) {
-	    return headers[kHeadersList]
-	  }
-
-	  if (!kHeadersListNode) {
-	    kHeadersListNode = Object.getOwnPropertySymbols(headers).find(
-	      (symbol) => symbol.description === 'headers list'
-	    );
-
-	    assert(kHeadersListNode, 'Headers cannot be parsed');
-	  }
-
-	  const headersList = headers[kHeadersListNode];
-	  assert(headersList);
-
-	  return headersList
-	}
-
 	util$1 = {
 	  isCTLExcludingHtab,
-	  stringify,
-	  getHeadersList
+	  validateCookieName,
+	  validateCookiePath,
+	  validateCookieValue,
+	  toIMFDate,
+	  stringify
 	};
 	return util$1;
 }
@@ -22013,7 +22014,7 @@ function requireCookies () {
 	hasRequiredCookies = 1;
 
 	const { parseSetCookie } = requireParse();
-	const { stringify, getHeadersList } = requireUtil$1();
+	const { stringify } = requireUtil$1();
 	const { webidl } = requireWebidl();
 	const { Headers } = requireHeaders();
 
@@ -22089,14 +22090,13 @@ function requireCookies () {
 
 	  webidl.brandCheck(headers, Headers, { strict: false });
 
-	  const cookies = getHeadersList(headers).cookies;
+	  const cookies = headers.getSetCookie();
 
 	  if (!cookies) {
 	    return []
 	  }
 
-	  // In older versions of undici, cookies is a list of name:value.
-	  return cookies.map((pair) => parseSetCookie(Array.isArray(pair) ? pair[1] : pair))
+	  return cookies.map((pair) => parseSetCookie(pair))
 	}
 
 	/**
@@ -27736,35 +27736,26 @@ function render(template, scope, options) {
     return renderer.render(scope);
 }
 
-const input = coreExports.getInput("variable");
-const aiInput = coreExports.getInput("ai");
-const template = coreExports.getInput("template");
-const needEscapeChars = coreExports.getInput("need-escape-chars");
-const escapeChar = coreExports.getInput("escape-char");
-const data = JSON.parse(input);
-let ai = {};
-if (aiInput) {
-    ai = JSON.parse(aiInput);
-}
-const dataToInject = {
-    ai,
-    video: data
+const format = (template, data, sanitize = false) => {
+    let sanitizedData = data;
+    try {
+        if (sanitize) {
+            sanitizedData = escapeAndReplaceLeafValues(data);
+        }
+    }
+    catch (e) {
+        coreExports.warning(`sanitize error, ignore it, ${e?.toString()}`);
+    }
+    coreExports.debug(`data, ${JSON.stringify(sanitizedData)}`);
+    return render(template, sanitizedData);
 };
-function escapeAndReplaceLeafValues(obj, specialChars, replacementValue = "_") {
+function escapeAndReplaceLeafValues(obj) {
     function escapeString(s) {
         if (typeof s !== "string") {
             return s;
         }
-        let escapedString = "";
-        for (const char of s) {
-            if (specialChars.includes(char)) {
-                escapedString += replacementValue;
-            }
-            else {
-                escapedString += char;
-            }
-        }
-        return escapedString;
+        const sanitized = s.replace(/[^\p{L}\p{N}_.\-]/gu, '_');
+        return sanitized;
     }
     function processNode(node) {
         if (typeof node === "object" && node !== null) {
@@ -27792,13 +27783,18 @@ function escapeAndReplaceLeafValues(obj, specialChars, replacementValue = "_") {
     }
     return processNode(obj);
 }
-const specialChars = needEscapeChars.split('');
-// replace special char before render
-let escapedData = dataToInject;
+
+const input = coreExports.getInput("variable");
+const template = coreExports.getInput("template");
+const sanitizeInput = coreExports.getInput("sanitize") || 'false';
+const data = JSON.parse(input);
+let sanitize = sanitizeInput == 'true';
 try {
-    escapedData = escapeAndReplaceLeafValues(dataToInject, specialChars, escapeChar);
+    console.log(JSON.stringify(data?.video));
+    console.log(JSON.stringify(data?.ai));
+    console.log("keys", Object.keys(data));
 }
 catch (e) {
-    coreExports.warning(`escape error, ignore it, ${e?.toString()}`);
+    console.error('access failed', e);
 }
-coreExports.setOutput('result', render(template, escapedData));
+coreExports.setOutput('result', format(template, data, sanitize));
