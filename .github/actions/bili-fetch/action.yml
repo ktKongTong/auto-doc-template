@@ -156,7 +156,7 @@ runs:
         cat tmp.json >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
         rm -f tmp.json
-    - id: show-test-result
+    - id: show-param-result
       shell: bash
       run: |
         ehco "show result"
