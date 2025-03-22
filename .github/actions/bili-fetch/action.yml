@@ -159,7 +159,7 @@ runs:
     - id: show-param-result
       shell: bash
       run: |
-        ehco "show result"
+        echo "show result"
         echo '${{ steps.merge-param.outputs.result }}'
     - id: gen-markdown-test
       if: ${{ steps.check-exist.outputs.continue == 'true' }}
