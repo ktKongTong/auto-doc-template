@@ -27786,6 +27786,7 @@ const format = (template, data, sanitize = false) => {
     catch (e) {
         coreExports.warning(`sanitize error, ignore it, ${e?.toString()}`);
     }
+    coreExports.debug(`data, ${JSON.stringify(sanitizedData)}`);
     return render(template, sanitizedData);
 };
 function escapeAndReplaceLeafValues(obj) {

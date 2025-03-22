@@ -6,9 +6,11 @@ export const format = (template: string, data: any, sanitize: boolean = false) =
     if(sanitize) {
       sanitizedData = escapeAndReplaceLeafValues(data)
     }
+
   }catch (e) {
     core.warning(`sanitize error, ignore it, ${e?.toString()}`)
   }
+  core.debug(`data, ${JSON.stringify(sanitizedData)}`)
   return render(template, sanitizedData)
 }
 

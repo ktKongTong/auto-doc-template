@@ -44,7 +44,7 @@ runs:
       shell: bash
       run: |
         cat <<EOF > tmp-stt.md
-          ${{steps.gemini-stt.outputs.output}}
+        ${{steps.gemini-stt.outputs.output}}
         EOF
     - name: Upload output.md
       uses: actions/upload-artifact@v4
