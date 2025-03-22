@@ -149,7 +149,7 @@ runs:
           "ai": ${{ steps.stt.outputs.ai }}
         }
         EOF
-        cat tmp.json
+        cat tmp.json | jq type 1>/dev/null
         echo "result<<EOF" >> $GITHUB_OUTPUT
         cat tmp.json >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
@@ -164,7 +164,7 @@ runs:
     - id: show-test-result
       shell: bash
       run: |
-        ${{ steps.gen-markdown-test.outputs.result }}
+        echo "${{ steps.gen-markdown-test.outputs.result }}"
     - id: gen-markdown
       if: ${{ steps.check-exist.outputs.continue == 'true' }}
       uses: ./.github/actions/format
