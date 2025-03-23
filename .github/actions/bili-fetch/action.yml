@@ -128,7 +128,7 @@ runs:
     - id: download-audio
       uses: ./.github/actions/bili-download-audio
       with:
-        bvid: ${{ steps.bili.outputs.bvid }}
+        bvid: ${{ fromJSON(steps.bili.outputs.video).bvid }}
         bili-proxy: ${{ inputs.bili-proxy }}
         sessdata: ${{ inputs.sessdata }}
     - id: stt
