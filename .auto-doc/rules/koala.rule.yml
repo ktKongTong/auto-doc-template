@@ -16,6 +16,7 @@ match:
           owner.mid: 489667127
           title: "科技周报"
         template:
+          filepath: docs/Koala聊开源/{{video.title}}.md
           prompt:
             system: |
               这是一段标题为【{{video.title}}】的视频音频，请识别对应的语言，并转换为对应文本。
