@@ -11,7 +11,7 @@ match:
   - id: Koala聊开源-科技周报
     platform:
       bilibili:
-        script: .auto-doc/scripts/bilibili/{{owner.name}}.mjs
+        script: .autodoc/scripts/bilibili/{{owner.name}}.mjs
         condition:
           owner.mid: 489667127
           title: "科技周报"

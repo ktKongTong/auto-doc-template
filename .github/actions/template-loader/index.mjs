@@ -42098,7 +42098,7 @@ const loadScript = async (p) => {
 };
 
 const input = coreExports.getInput("variable");
-const rulePath = coreExports.getInput("rule-path") || ".auto-doc/rules";
+const rulePath = coreExports.getInput("rule-path") || ".autodoc/rules";
 const presetFilepathTemplate = coreExports.getInput("preset-filepath-template") || undefined;
 const presetSystemPromptTemplate = coreExports.getInput("preset-system-prompt-template") || undefined;
 const presetPromptTemplate = coreExports.getInput("preset-prompt-template") || undefined;

@@ -14,4 +14,4 @@ fallback:
     ---
     {{ai.markdown}}
   commit-message: |
-    new docs: {{ video.title }}
+    new docs: {{ title }}

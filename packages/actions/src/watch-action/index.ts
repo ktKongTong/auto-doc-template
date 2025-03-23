@@ -3,7 +3,7 @@ import { handlePostRule } from './bili/new-post.js'
 import { ruleLoader } from '../shared/rule-loader.js'
 import type {Event} from '../shared/type.js'
 
-const rulePath = core.getInput("rule-path") || ".auto-doc/rules"
+const rulePath = core.getInput("rule-path") || ".autodoc/rules"
 const rules = await ruleLoader(rulePath)
 const output = [] as Event[]
 

@@ -42079,7 +42079,7 @@ const loadRule = async (path) => {
     return res;
 };
 
-const rulePath = coreExports.getInput("rule-path") || ".auto-doc/rules";
+const rulePath = coreExports.getInput("rule-path") || ".autodoc/rules";
 const rules = await ruleLoader(rulePath);
 const output = [];
 // 1. get latest video

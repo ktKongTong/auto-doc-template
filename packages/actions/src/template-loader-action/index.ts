@@ -7,7 +7,7 @@ import { ruleLoader } from '../shared/rule-loader.js'
 import { loadScript } from '../shared/load-script.js'
 
 const input = core.getInput("variable");
-const rulePath = core.getInput("rule-path") || ".auto-doc/rules"
+const rulePath = core.getInput("rule-path") || ".autodoc/rules"
 
 const presetFilepathTemplate = core.getInput("preset-filepath-template") || undefined
 const presetSystemPromptTemplate = core.getInput("preset-system-prompt-template") || undefined
