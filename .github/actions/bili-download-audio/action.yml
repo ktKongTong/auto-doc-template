@@ -29,11 +29,11 @@ runs:
         audio-file-template: "output/{bvid}.mp4"
     - name: convert to mp3
       shell: bash
-      run: ffmpeg -i output/${{ steps.bili.outputs.bvid }}.mp4 -ar 16000 output/${{ steps.bili.outputs.bvid }}.mp3
+      run: ffmpeg -i output/${{ inputs.bvid }}.mp4 -ar 16000 output/${{ inputs.bvid }}.mp3
     - name: Upload output.mp3
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ steps.bili.outputs.bvid }}.mp3
-        path: output/${{ steps.bili.outputs.bvid }}.mp3
+        name: ${{ inputs.bvid }}.mp3
+        path: output/${{ inputs.bvid }}.mp3
         if-no-files-found: error
         retention-days: 10
