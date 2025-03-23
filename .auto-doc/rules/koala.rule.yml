@@ -5,7 +5,7 @@ listen:
         post:
           mid: 489667127
           keywords: 科技周报
-          filepath: docs/Koala聊开源/{{title}}.md
+          filepath: docs/Koala聊开源/{{video.title}}.md
 
 match:
   - id: Koala聊开源-科技周报

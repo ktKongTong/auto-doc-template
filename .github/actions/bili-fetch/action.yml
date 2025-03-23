@@ -89,6 +89,7 @@ runs:
       with:
         variable: ${{ steps.bili.outputs.video }}
         template: ${{steps.template-loader.outputs.filepath-template}}
+        sanitize: 'true'
     - name: checkout to another branch
       if: ${{ inputs.type=='commit' }}
       uses: actions/checkout@v4
