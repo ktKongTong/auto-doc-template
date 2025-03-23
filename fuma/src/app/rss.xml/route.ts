@@ -5,13 +5,13 @@ function generateRssFeed(category: string) {
   const site = config.baseUrl
   const feedOptions = {
     title: config.feed?.title ?? `${config.title} | RSS Feed`,
-    description: config.feed?.description ?? `${category} RSS feed powered by V2Doc`,
+    description: config.feed?.description ?? `${category} RSS feed powered by Auto2Doc`,
     id: config.feed?.id ??  site,
     link: config.feed?.link ?? site,
     language: config.feed?.language ?? "zh-CN",
     image: config.feed?.image ?? `${site}/logo.png`,
     favicon: config.feed?.favicon ?? `${site}/favicon.ico`,
-    copyright: config.feed?.copyright ?? 'V2Doc',
+    copyright: config.feed?.copyright ?? 'Auto2Doc',
 };
   const feed = new Feed(feedOptions);
   return feed;

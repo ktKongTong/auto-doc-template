@@ -38,7 +38,7 @@ export const config: Config = {
   fuma: {
     baseLayout: {
       nav: {
-        title: <>V2Doc</>,
+        title: <>Auto2Doc</>,
       },
       links: [
         {
