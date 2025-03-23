@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: get and download video
         id: bili
-        uses: ktKongTong/bili-action@v0.2.10
+        uses: ktKongTong/bili-action@v0.2.11
         with:
           bvid: ${{ env.bvid }}
       - uses: ./.github/actions/template-loader

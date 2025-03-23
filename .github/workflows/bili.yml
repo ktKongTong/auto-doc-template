@@ -86,7 +86,7 @@ jobs:
     steps:
       - name: get video
         id: bili
-        uses: ktKongTong/bili-action@v0.2.10
+        uses: ktKongTong/bili-action@v0.2.11
         with:
           bvid: ${{ env.bvid }}
       - uses: actions/checkout@v4
