@@ -20,6 +20,7 @@ jobs:
           echo 'Watch result: ${{ steps.watch.outputs.result }}'
   fetch:
     needs: watch
+    if: ${{ fromJSON(needs.watch.outputs.result)[0] != null }}
     strategy:
       max-parallel: 2
       fail-fast: false
