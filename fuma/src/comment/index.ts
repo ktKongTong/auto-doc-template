@@ -3,17 +3,35 @@ import { createDrizzleAdapter } from "@fuma-comment/server/adapters/drizzle";
 import { db } from "@/lib/db";
 import { comments, rates, roles, user } from "@/lib/db/schema";
 import { createBetterAuthAdapter } from "@fuma-comment/server/adapters/better-auth";
-import { auth as betterAuth } from "@/lib/auth";
+import { getAuth } from "@/lib/auth";
+import {config} from "../../config";
+import {NextRequest } from "next/server";
 
-export const auth = createBetterAuthAdapter(betterAuth);
+const NoOptRouterHandler = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ comment: string }> }
+) => {}
 
-export const storage = createDrizzleAdapter({
-  db,
-  schemas: { user, comments, rates, roles },
-  auth: 'better-auth',
-});
+const noOptRoute = {
+  GET: NoOptRouterHandler,
+  POST: NoOptRouterHandler,
+  PATCH: NoOptRouterHandler,
+  DELETE: NoOptRouterHandler,
+}
 
-export const commentRoute = NextComment({
-  auth: auth,
-  storage,
-});
+const createCommentRoute = () => {
+  const auth = createBetterAuthAdapter(getAuth());
+  const storage = createDrizzleAdapter({
+    db,
+    schemas: { user, comments, rates, roles },
+    auth: 'better-auth',
+  });
+
+  return NextComment({
+    auth: auth,
+    storage,
+  })
+  // return noOptRoute
+}
+
+export const commentRoute = config.enableComment ? createCommentRoute() : noOptRoute

@@ -9,7 +9,6 @@ type Config = {
   github?: {
     owner: string
     repo: string
-    // default true
     editable?: boolean
     sha: string
   }
@@ -23,22 +22,22 @@ type Config = {
 const baseUrl = process.env.BASE_URL as string
 
 export const config: Config = {
-  enableComment: true,
-  title: 'Bili Archive',
-  description: 'Bili Archive',
+  enableComment: false,
+  title: 'AutoDoc',
+  description: 'AutoDoc',
   docBasePath: 'docs',
-  github: { owner: 'ktkongtong', repo: 'bili-archive', sha: 'main' },
+  github: { owner: 'ktkongtong', repo: 'auto-doc-template', sha: 'main' },
   baseUrl: baseUrl,
   feed: {
-    title: 'Bili Archive',
-    description: 'Bili Archive',
+    title: 'AutoDoc',
+    description: 'AutoDoc',
     id: baseUrl,
     link: baseUrl,
   } as FeedOptions,
   fuma: {
     baseLayout: {
       nav: {
-        title: <>Auto2Doc</>,
+        title: <>AutoDoc</>,
       },
       links: [
         {
