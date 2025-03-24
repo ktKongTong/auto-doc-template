@@ -131,10 +131,10 @@ match:
           # 直到写 Readme 的时候，才发现 or 规则的设置有点问题，没考虑到这种情况下的Yaml重名Key
           or:                     # wrong
             title: "科技周报"      # wrong
-            title: "HackNews 周报" # wrong
+            title: "Hacker News 周报" # wrong
           # 好在值实际上表示的是一个正则表达式（new Regexp)
-          # 这种问题写法可以转为正则表达式
-          title: (HackNews\s|科技)周报
+          # 这种问题写法可以转为正则表达式，注意 yaml 中的转义字符`\`
+          title: "(科技|Hacker\\s?News\\s?)周报"
         template: # template info
 ```
 
@@ -147,6 +147,35 @@ template 是生成各类信息的模板，使用时利用当前信息对模板�
 3. `system-prompt-template`，同 2.
 4. `markdown-template`，最终生成的markdown模板，可以利用视频信息以及 llm 识别之后的信息（如markdown, tag)进行插值。
 5. `commit-message-template`，提交信息模板，无关紧要。
+
+##### 模版中所用到的数据
+
+目前模板所用数据均特定于 bilibili 平台。
+其中 `filepath`, `prompt`, `system-prompt` 以及 `commit-message` 的插值数据是相同的。
+
+均基于 bilibili api 视频详情。 同时注入了 topComment 变量。
+```typescript
+//@see https://socialsisteryi.github.io/bilibili-API-collect/docs/video/info.html
+const data = getVideoDetial()
+// @see https://socialsisteryi.github.io/bilibili-API-collect/docs/comment/list.html#评论区明细
+const topComment = getVideoTopComment()
+return {
+  ...data,
+  topComment,
+}
+```
+`markdown-template` 的插值数据更为丰富。除了从 api 获取的信息。还有 ai 生成的信息。
+```typescript
+type Data = {
+  video: VideoDetail,
+  ai: AIResult
+}
+type AIResult = {
+  markdown: string
+}
+```
+
+
 
 ##### fallback
 在单个 match / listen 规则之外，可以定义一个 fallback template。
