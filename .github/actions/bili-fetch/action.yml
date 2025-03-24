@@ -126,6 +126,7 @@ runs:
         template: |
           ${{steps.template-loader.outputs.system-prompt-template}}
     - id: download-audio
+      if: ${{ steps.check-exist.outputs.continue == 'true' }}
       uses: ./.github/actions/bili-download-audio
       with:
         bvid: ${{ fromJSON(steps.bili.outputs.video).bvid }}
@@ -141,6 +142,7 @@ runs:
         prompt: ${{ steps.gen-prompt.outputs.result }}
         system-prompt: ${{ steps.gen-system-prompt.outputs.result }}
     - id: merge-param
+      if: ${{ steps.check-exist.outputs.continue == 'true' }}
       name: merge
       shell: bash
       run: |
@@ -185,11 +187,11 @@ runs:
         rm -f tmp.md
         ls -l "$path"
     - id: gen-commit-message
+      if: ${{ steps.check-exist.outputs.continue == 'true' }}
       uses: ./.github/actions/format
       with:
         variable: ${{ steps.bili.outputs.video }}
         template: ${{steps.template-loader.outputs.commit-message-template}}
-
     - name: commit and push
       if: ${{ steps.check-exist.outputs.continue == 'true' }}
       uses: ./.github/actions/pr-or-commit
