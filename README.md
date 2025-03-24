@@ -222,3 +222,15 @@ type Script = {
     ├──vercel.yml           # fumadocs 部署到 Vercel                                                                                                                                             
     └──watch.yml            # (自动) 执行监测规则的工作流
 ```
+
+## fumadocs
+
+本模版采用 [`fumadocs`](https://fumadocs.vercel.app/) 作为文档框架。 集成[`fuma-comment`](https://fuma-comment.vercel.app/)评论支持。
+
+要启用comment需要在 `fuma/src/config.tsx` 中，将 `enableComment` 设为 `true`，并设置如下环境变量。
+
+- `BETTER_AUTH_SECRET` 参阅 `https://www.better-auth.com/docs/installation`
+- `DATABASE_URL`，fuma-comment 采用 postgres 数据库，推荐使用[`neon`](http://www.neon.tech/)
+- `UPLOADTHING_TOKEN`，参阅[uploadthing](https://uploadthing.com/)，用于评论附件上传。
+- `GITHUB_CLIENT_ID` 与 `GITHUB_CLIENT_SECRET`，参阅 [github doc](https://docs.github.com/zh/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app)
+- `BASE_URL` 即是站点 URL
