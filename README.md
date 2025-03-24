@@ -30,6 +30,11 @@ flowchart TD
     D --> |commit message template| J
 ```
 
+## 环境变量配置
+action 中使用到了多种 `secret`。需要在仓库的设置中进行配置。
+`GEMINI_TOKEN`，需在 [aistudio](https://aistudio.google.com) 中获取。
+`PAT`，GitHub Personal Access Token，获取方式参见[github doc](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
+
 ## 使用
 
 通过该仓库生成模板后，修改 `.autodoc` 下的文件即可进行规则配置。
@@ -37,7 +42,7 @@ flowchart TD
 rules 文件利用yaml 进行定义，匹配`.autodoc/rules`中的所有`*.rule.{yml,yaml}`文件。
 scripts 则包含这个过程中可能用到的 JS 脚本。
 
-规则分为两类。`listen` 规则与 `match` 规则。这
+规则分为两类。`listen` 规则与 `match` 规则。
 
 ### listen 规则
 顾名思义，`listen` 规则就是用来监测用户投稿的。利用 GitHub Action的 schedule 触发。
@@ -167,7 +172,7 @@ fallback:
     new docs: {{ title }}
 ```
 
-## 脚本
+### 脚本
 在 listen 和 script 规则中，可以使用脚本实现复杂的匹配和模板。
 因此预期脚本中会返回两种函数，`listen` 和 `template`。
 两种函数都接受视频信息，然后返回模板。
@@ -198,11 +203,11 @@ type Script = {
 }
 ```
 
+
+
 ## 自定义
 
-这是一个模板仓库，因此说明各个 action 的用意有利于对流程进行修改定制。
-
-.github 文件夹下共有 7 个 action，和 5 个 workflow ，以下一一说明。
+这是一个模板仓库， .github 文件夹下共有 7 个 action，和 5 个 workflow ，以下一一说明。
 
 ```
 
@@ -219,7 +224,7 @@ type Script = {
     │                       # 会创建 batch 分支并提交，但不会创建 PR                                                                                                                                         
     ├──bili.yml             # (手动) 输入单个 BVID 触发 bili-fetch，创建 PR                                                                                                                                       
     ├──ci.yml               # 目前仅测试 template-loader-action                                                                                                                                             
-    ├──vercel.yml           # fumadocs 部署到 Vercel                                                                                                                                             
+    ├──vercel.yml           # fumadocs 部署到 Vercel 默认未启用。                                                                                                                                           
     └──watch.yml            # (自动) 执行监测规则的工作流
 ```
 
