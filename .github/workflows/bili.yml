@@ -22,6 +22,10 @@ on:
         description: "markdown-template"
         required: false
         type: string
+      commit-message-template:
+        description: "commit-message-template"
+        required: false
+        type: string
       exec-even-exist:
         type: 'boolean'
         required: false
@@ -55,10 +59,15 @@ on:
         description: "markdown-template"
         required: false
         type: string
+      commit-message-template:
+        description: "commit-message-template"
+        required: false
+        type: string
       exec-even-exist:
         type: 'boolean'
         required: false
-        default: 'false'
+        default: false
+        description: ' overwrite，即使分支/文件存在，也继续执行'
       model:
         description: "gemini model"
         type: choice
@@ -114,4 +123,4 @@ jobs:
           markdown-template: ${{ env.markdown-template }}
           prompt-template: ${{ env.prompt-template }}
           system-prompt-template: ${{ env.system-prompt-template }}
-          commit-message-template: ":memo: new docs ${{ steps.bili.outputs.title }}"
+          commit-message-template: ${{ env.commit-message-tmplate || format('new docs {0}', fromJSON(steps.bili.outputs.video).title) }}
