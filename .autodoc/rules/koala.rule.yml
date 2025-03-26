@@ -1,11 +1,11 @@
-listen:
-  - id: Koala聊开源
-    platform:
-      bilibili:
-        post:
-          mid: 489667127
-          keywords: 科技周报
-          filepath: docs/Koala聊开源/{{title}}.md
+#listen:
+#  - id: Koala聊开源
+#    platform:
+#      bilibili:
+#        post:
+#          mid: 489667127
+#          keywords: 科技周报
+#          filepath: docs/Koala聊开源/{{title}}.md
 
 match:
   - id: Koala聊开源-科技周报
