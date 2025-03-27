@@ -1,6 +1,6 @@
 # auto-doc-template
 
-这是一个模版仓库
+这是一个模版仓库，发布到 marketplace 的 action ver 请用[autodoc-action](https://github.com/marketplace/actions/autodoc-action)
 
 该仓库通过配置规则，利用GitHub Action 以及 Gemini API 自动将符合要求的B站视频转为markdown 并提交至仓库。
 
