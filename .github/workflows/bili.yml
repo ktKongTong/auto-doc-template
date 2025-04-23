@@ -105,6 +105,7 @@ env:
   commit-message-template: ${{ inputs.commit-message-template }}
   model: ${{ inputs.model }}
   branch: ${{ inputs.branch || format('fetch/{0}', inputs.bvid) }}
+  commit-type: ${{ inputs.commit-type || 'pr' }}
 jobs:
   get-video:
     runs-on: ubuntu-latest
@@ -135,7 +136,7 @@ jobs:
           bili-proxy: ${{ secrets.BILI_STREAM_PROXY }}
           exec-even-exist: ${{ env.exec-even-exist }}
           branch: ${{ env.branch }}
-          type: ${{ inputs.commit-type }}
+          type: ${{ env.commit-type }}
           filepath-template: ${{ env.filepath-template }}
           markdown-template: ${{ env.markdown-template }}
           prompt-template: ${{ env.prompt-template }}
