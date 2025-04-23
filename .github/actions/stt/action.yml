@@ -38,11 +38,12 @@ runs:
       run: |
         if [['${{ inputs.generateSchema }}' != '' ]]
         then
-          echo 'use application/json output'
+           echo 'use application/json output'
            echo "response-mime=application/json" >> "$GITHUB_OUTPUT"
         else
            echo 'use text/plain output'
            echo "response-mime=text/plain" >> "$GITHUB_OUTPUT"
+        fi
     - name: speech to text with gemini
       uses: ktKongTong/gemini-action@v0.2.2
       id: gemini-stt
