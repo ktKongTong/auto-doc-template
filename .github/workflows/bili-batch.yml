@@ -45,6 +45,7 @@ env:
   model: ${{ inputs.model }}
   exec-even-exist: ${{ inputs.exec-even-exist || 'false' }}
   branch: 'batch/${{inputs.mid}}/${{inputs.keywords}}'
+  maxOutputTokens: ${{ inputs.maxOutputTokens || '65536' }}
 jobs:
   batch-get-video:
     runs-on: ubuntu-latest
@@ -100,6 +101,7 @@ jobs:
           token: ${{ secrets.GEMINI_TOKEN }}
           github-token: ${{ secrets.PAT }}
           model: ${{ env.model }}
+          maxOutputTokens: ${{ env.maxOutputTokens }}
           prompt-template: ${{ env.prompt-template }}
           system-prompt-template: ${{ env.system-prompt-template }}
           bvid: ${{ matrix.bvid }}
@@ -129,6 +131,7 @@ jobs:
           bili-proxy: ${{ secrets.BILI_STREAM_PROXY }}
           exec-even-exist: ${{ env.exec-even-exist }}
           branch: ${{ env.branch }}
+          maxOutputTokens: ${{ env.maxOutputTokens }}
           type: 'commit'
   get-video-chunk-3:
     needs: [batch-get-video,get-video-chunk-2]
@@ -146,6 +149,7 @@ jobs:
           token: ${{ secrets.GEMINI_TOKEN }}
           github-token: ${{ secrets.PAT }}
           model: ${{ env.model }}
+          maxOutputTokens: ${{ env.maxOutputTokens }}
           prompt-template: ${{ env.prompt-template }}
           system-prompt-template: ${{ env.system-prompt-template }}
           bvid: ${{ matrix.bvid }}
@@ -176,3 +180,4 @@ jobs:
           exec-even-exist: ${{ env.exec-even-exist }}
           branch: ${{ env.branch }}
           type: 'commit'
+          maxOutputTokens: ${{ env.maxOutputTokens }}
