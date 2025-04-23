@@ -36,7 +36,7 @@ runs:
     - id: get-mime
       shell: bash
       run: |
-        if ['${{ inputs.generateSchema }}' != '' ]
+        if [['${{ inputs.generateSchema }}' != '' ]]
         then
           echo 'use application/json output'
            echo "response-mime=application/json" >> "$GITHUB_OUTPUT"
