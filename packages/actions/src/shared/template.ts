@@ -10,7 +10,6 @@ export const modifyTemplate = (template: ResultTemplate, cur?: Template) => {
     template.prompt.user = cur?.prompt?.user
     modified = true
   }
-
   if(!template.prompt.schema && cur?.prompt?.schema) {
     template.prompt.schema = cur?.prompt?.schema
     modified = true

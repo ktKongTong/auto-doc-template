@@ -4,7 +4,7 @@ on:
     branches:
       - 'main'
 env:
-  bvid: BV1BpXjY2EP2
+  bvid: BV1PudqYZE8r
 jobs:
   get-video:
     runs-on: ubuntu-latest

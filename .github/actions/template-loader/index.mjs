@@ -27337,6 +27337,7 @@ const modifyTemplate = (template, cur) => {
         template.prompt.user = cur?.prompt?.user;
         modified = true;
     }
+    console.log("prompt", cur?.prompt);
     if (!template.prompt.schema && cur?.prompt?.schema) {
         template.prompt.schema = cur?.prompt?.schema;
         modified = true;
@@ -42144,14 +42145,18 @@ const data = JSON.parse(input);
 const presetTemplate = loadPresetTemplate();
 const rules = await ruleLoader(rulePath);
 outer: for (const rule of rules.match) {
+    console.log("matched-rules", JSON.stringify(rule));
     if (rule.platform) {
         const platformRuleKey = Object.keys(rule.platform);
         for (const key of platformRuleKey) {
             const platform = rule.platform[key];
             const condition = platform.condition;
             const scriptApplied = await applyScript(presetTemplate, platform.script);
+            coreExports.debug(`scriptApplied, ${scriptApplied}`);
+            coreExports.debug(`testRule, ${JSON.stringify(condition)}, ${JSON.stringify(data)}`);
             if (scriptApplied || testRule(condition, data)) {
                 // apply platform-specific(like bilibili output audio) template
+                coreExports.debug(`applying template, ${JSON.stringify(platform.template)}`);
                 modifyTemplate(presetTemplate, platform.template);
                 modifyTemplate(presetTemplate, rule.fallback);
                 break outer;

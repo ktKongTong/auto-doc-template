@@ -65,8 +65,11 @@ outer: for(const rule of rules.match) {
       const platform = rule.platform[key as keyof typeof rule.platform]
       const condition = platform.condition
       const scriptApplied = await applyScript(presetTemplate, platform.script)
+      core.debug(`scriptApplied, ${scriptApplied}`)
+      core.debug(`testRule, ${JSON.stringify(condition)}, ${JSON.stringify(data)}`)
       if(scriptApplied || testRule(condition, data)) {
         // apply platform-specific(like bilibili output audio) template
+        core.debug(`applying template, ${JSON.stringify(platform.template)}`)
         modifyTemplate(presetTemplate, platform.template)
         modifyTemplate(presetTemplate, rule.fallback)
         break outer
