@@ -95,11 +95,6 @@ on:
         required: false
         default: '65536'
         type: string
-      commit-type:
-        description: "commit type, pr | commit"
-        required: false
-        default: 'pr'
-        type: string
 env:
   bvid: ${{inputs.bvid }}
   exec-even-exist: ${{ inputs.exec-even-exist }}
