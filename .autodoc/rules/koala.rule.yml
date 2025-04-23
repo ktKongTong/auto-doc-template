@@ -23,12 +23,14 @@ match:
               properties:
                 markdown:
                   type: string
-                  description: '按照要求出现的原文转译的内容'
+                  description: '原文转译的内容'
                 tags:
                   type: array
                   items:
                     type: string
                   description: '标签分类'
+                  maxItems: 6
+                  minItems: 1
             system: |
               这是一段标题为【{{title}}】的视频音频，请识别对应的语言，并转换为对应文本。
               请为文本进行合适的分段，并添加标点符号，段落前后用两个换行符进行分隔。
