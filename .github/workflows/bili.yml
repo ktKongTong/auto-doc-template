@@ -32,7 +32,7 @@ on:
       model:
         type: string
         description: "gemini model"
-        default: "gemini-2.0-flash"
+        default: "gemini-2.5-flash-preview-04-17"
       maxOutputTokens:
         description: "maxOutputTokens"
         required: false
