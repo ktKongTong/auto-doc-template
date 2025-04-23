@@ -9,10 +9,6 @@ inputs:
   prompt:
     description: "prompt"
     required: true
-  generateMime:
-    description: "generate mime, text/plain | application/json"
-    default: 'text/plain'
-    required: false
   generateSchema:
     description: "output schema, need generateMime == application/json"
     required: false
@@ -37,6 +33,15 @@ runs:
       with:
         name: ${{ inputs.filename }}
         path: output
+    - id: get-mime
+      if: ${{ steps.check-exist.outputs.continue == 'true' }}
+      shell: bash
+      run: |
+        if ['${{ inputs.generateSchema }}' != '' ]
+        then
+           echo "response-mime=application/json" >> "$GITHUB_OUTPUT"
+        else
+           echo "response-mime=text/plain" >> "$GITHUB_OUTPUT"
     - name: speech to text with gemini
       uses: ktKongTong/gemini-action@v0.2.2
       id: gemini-stt
@@ -47,7 +52,7 @@ runs:
         prompt: ${{ inputs.prompt }}
         system-prompt: ${{ inputs.system-prompt }}
         file-mime: audio/mp3
-        responseMime: ${{ inputs.generateMime }}
+        responseMime: ${{ steps.get-mime.outputs.response-mime }}
         responseSchema: ${{ inputs.generateSchema }}
         maxOutputTokens: ${{ inputs.maxOutputTokens }}
     - name: set output
@@ -66,11 +71,13 @@ runs:
     - name: set output
       id: final-output
       shell: bash
-      run: |  
-        if [[ ${{ inputs.generateMime }} == 'application/json' ]]
+      run: |
+        if [[ '${{ inputs.generateMime }}' == 'application/json' ]]
         then
+          echo 'use application/json output'
           cat tmp-stt.md > tmp-stt.json
         else
+          echo 'use text/plain output'
           cat tmp-stt.md | jq -sR '{markdown: .}' > tmp-stt.json
         fi
         echo 'ai<<'EOF'' >> $GITHUB_OUTPUT

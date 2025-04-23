@@ -135,12 +135,6 @@ runs:
         bvid: ${{ fromJSON(steps.bili.outputs.video).bvid }}
         bili-proxy: ${{ inputs.bili-proxy }}
         sessdata: ${{ inputs.sessdata }}
-#    - id: get-mime
-#      if: ${{ steps.check-exist.outputs.continue == 'true' }}
-#      run: |
-#      if steps.template-loader.outputs.schema-template is undefined set text/plain
-#      else set
-      # 'application/json'
     - id: stt
       if: ${{ steps.check-exist.outputs.continue == 'true' }}
       uses: ./.github/actions/stt
@@ -150,7 +144,6 @@ runs:
         model: ${{ inputs.model }}
         prompt: ${{ steps.gen-prompt.outputs.result }}
         system-prompt: ${{ steps.gen-system-prompt.outputs.result }}
-        generateMime: 'application/json'
         generateSchema: ${{ steps.template-loader.outputs.schema-template }}
         maxOutputTokens: ${{ inputs.maxOutputTokens }}
     - id: merge-param
