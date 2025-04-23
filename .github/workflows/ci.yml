@@ -26,3 +26,4 @@ jobs:
           echo "commit-message: ${{steps.template-loader.outputs.commit-message-template}}"
           echo "prompt: ${{steps.template-loader.outputs.prompt-template}}"
           echo "system-prompt: ${{steps.template-loader.outputs.system-prompt-template }}"
+          echo "schema: ${{steps.template-loader.outputs.schema-template }}"

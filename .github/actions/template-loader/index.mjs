@@ -27337,6 +27337,10 @@ const modifyTemplate = (template, cur) => {
         template.prompt.user = cur?.prompt?.user;
         modified = true;
     }
+    if (!template.prompt.schema && cur?.prompt?.schema) {
+        template.prompt.schema = cur?.prompt?.schema;
+        modified = true;
+    }
     if (!template.filepath && typeof cur?.filepath === 'string') {
         template.filepath = cur?.filepath;
         modified = true;
@@ -42130,9 +42134,10 @@ const loadPresetTemplate = () => {
         prompt: {
             user: presetPromptTemplate,
             system: presetSystemPromptTemplate,
+            schema: undefined
         },
         markdown: presetMarkdownTemplate,
-        'commit-message': presetCommitMessageTemplate
+        'commit-message': presetCommitMessageTemplate,
     };
 };
 const data = JSON.parse(input);
@@ -42158,5 +42163,6 @@ modifyTemplate(presetTemplate, rules.fallback);
 coreExports.setOutput('filepath-template', presetTemplate.filepath);
 coreExports.setOutput('system-prompt-template', presetTemplate.prompt?.system);
 coreExports.setOutput('prompt-template', presetTemplate.prompt?.user);
+coreExports.setOutput('schema-template', presetTemplate.prompt?.schema);
 coreExports.setOutput('markdown-template', presetTemplate.markdown);
 coreExports.setOutput('commit-message-template', presetTemplate['commit-message']);

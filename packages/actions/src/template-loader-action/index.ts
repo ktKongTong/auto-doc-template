@@ -41,9 +41,11 @@ const loadPresetTemplate = () => {
     prompt: {
       user: presetPromptTemplate,
       system: presetSystemPromptTemplate,
+      schema: undefined
     },
     markdown: presetMarkdownTemplate,
-    'commit-message': presetCommitMessageTemplate
+    'commit-message': presetCommitMessageTemplate,
+
   }
 }
 
@@ -80,5 +82,6 @@ modifyTemplate(presetTemplate, rules.fallback)
 core.setOutput('filepath-template', presetTemplate.filepath)
 core.setOutput('system-prompt-template', presetTemplate.prompt?.system)
 core.setOutput('prompt-template',  presetTemplate.prompt?.user)
+core.setOutput('schema-template', presetTemplate.prompt?.schema)
 core.setOutput('markdown-template',  presetTemplate.markdown)
 core.setOutput('commit-message-template', presetTemplate['commit-message'])

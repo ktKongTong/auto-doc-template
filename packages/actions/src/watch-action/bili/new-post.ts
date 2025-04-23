@@ -13,6 +13,7 @@ const createPreset = () => ({
   prompt: {
     user: undefined,
     system: undefined,
+    schema: undefined
   },
   markdown: undefined,
   'commit-message': undefined

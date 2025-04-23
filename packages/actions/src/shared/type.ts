@@ -3,7 +3,7 @@ export type Template = {
   prompt?: {
     system?: string,
     user?: string
-    jsonschema?: any
+    schema?: any
   }
   markdown?: string
   "commit-message"?: string
@@ -14,7 +14,7 @@ export type ResultTemplate = {
   prompt: {
     system?: string,
     user?: string
-    jsonschema?: any
+    schema?: any
   }
   markdown?: string | undefined
   "commit-message"?: string | undefined
@@ -35,7 +35,7 @@ export type MatchRule = {
     bilibili: {
       condition: Condition,
       template: Template,
-      // script, will execute if condition match
+      // script, execute if condition match
       script?: string
     },
   }
@@ -45,7 +45,7 @@ export type MatchRule = {
 export type BiliPostListenRule = {
   mid: string
   keywords: string
-  // use to check if file exist
+  // script to check if file exist
   script?: string
   filepath: string
   template: Template
@@ -69,7 +69,6 @@ export type Rule = {
   fallback?: Template
 }
 
-// will as listen action output
 export type Event = {
   type: 'bilibili',
   payload: {

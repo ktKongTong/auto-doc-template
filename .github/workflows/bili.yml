@@ -71,10 +71,10 @@ on:
       model:
         description: "gemini model"
         type: choice
-        default: "gemini-2.0-flash"
+        default: "gemini-2.5-flash-preview-04-17"
         options:
           - "gemini-2.5-pro-exp-03-25"
-          - "gemini-2.0-flash"
+          - "gemini-2.5-flash-preview-04-17"
       branch:
         description: "commit branch"
         required: false
@@ -111,6 +111,7 @@ jobs:
         if: ${{ steps.check-branch-exists.outputs.exists == 'false' || env.exec-even-exist == 'true' }}
         uses: ./.github/actions/bili-fetch
         with:
+          maxOutputTokens: 65536
           token: ${{ secrets.GEMINI_TOKEN }}
           github-token: ${{ secrets.PAT }}
           model: ${{ env.model }}

@@ -9,11 +9,18 @@ inputs:
   prompt:
     description: "prompt"
     required: true
+  generateMime:
+    description: "generate mime, text/plain | application/json"
+    default: 'text/plain'
+    required: false
+  generateSchema:
+    description: "output schema, need generateMime == application/json"
+    required: false
   system-prompt:
     description: "system-prompt"
     required: true
-  structure-schema:
-    description: "structure schema"
+  maxOutputTokens:
+    description: "maxOutputTokens"
     required: false
   model:
     description: "gemini model"
@@ -31,7 +38,7 @@ runs:
         name: ${{ inputs.filename }}
         path: output
     - name: speech to text with gemini
-      uses: ktKongTong/gemini-action@v0.2.1
+      uses: ktKongTong/gemini-action@v0.2.2
       id: gemini-stt
       with:
         token: ${{inputs.token}}
@@ -40,6 +47,9 @@ runs:
         prompt: ${{ inputs.prompt }}
         system-prompt: ${{ inputs.system-prompt }}
         file-mime: audio/mp3
+        responseMime: ${{ inputs.generateMime }}
+        responseSchema: ${{ inputs.generateSchema }}
+        maxOutputTokens: ${{ inputs.maxOutputTokens }}
     - name: set output
       shell: bash
       run: |
@@ -56,8 +66,13 @@ runs:
     - name: set output
       id: final-output
       shell: bash
-      run: |
-        cat tmp-stt.md | jq -sR '{markdown: .}' > tmp-stt.json
+      run: |  
+        if [[ ${{ inputs.generateMime }} == 'application/json' ]]
+        then
+          cat tmp-stt.md > tmp-stt.json
+        else
+          cat tmp-stt.md | jq -sR '{markdown: .}' > tmp-stt.json
+        fi
         echo 'ai<<'EOF'' >> $GITHUB_OUTPUT
         cat tmp-stt.json >> $GITHUB_OUTPUT
         echo 'EOF' >> $GITHUB_OUTPUT
